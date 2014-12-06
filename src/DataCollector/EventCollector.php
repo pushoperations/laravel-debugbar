@@ -19,14 +19,15 @@ class EventCollector extends TimeDataCollector
     {
         $args = func_get_args();
         $name = $this->getCurrentEvent($args);
+        $start = EVENT_START;
         $time = microtime(true);
-        $this->addMeasure($name, $time, $time, $this->prepareParams($args) );
-
+        $this->addMeasure($name, $start, $time, $this->prepareParams($args) );
     }
 
     public function subscribe(Dispatcher $events)
     {
         $this->events = $events;
+        define('EVENT_START', microtime(true));
         $events->listen('*', array($this, 'onWildcardEvent'));
     }
 
